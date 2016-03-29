@@ -24,6 +24,7 @@ public class MainClass {
 
         PointGenerator generator = new PointGenerator(new GenStrategy() {
             private Random random = new Random();
+
             @Override
             public Point getPoint(int maxa, int maxb) {
                 return new Point(random.nextInt(maxa), random.nextInt(maxb));
