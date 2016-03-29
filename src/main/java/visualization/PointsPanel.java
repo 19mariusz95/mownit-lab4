@@ -33,4 +33,8 @@ public class PointsPanel extends JPanel {
         super.paint(g);
         update(g);
     }
+
+    public void setList(List<Point> list) {
+        this.list = list;
+    }
 }

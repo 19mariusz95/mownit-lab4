@@ -1,3 +1,5 @@
+import algorithm.ArbitrarySwap;
+import algorithm.SimulatedAnnealing;
 import generator.GenStrategy;
 import generator.PointGenerator;
 import visualization.PointsPanel;
@@ -30,12 +32,21 @@ public class MainClass {
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(500, 500));
+        frame.setSize(new Dimension(600, 600));
+        frame.setLocationRelativeTo(null);
         PointsPanel pointsPanel = new PointsPanel(list, 10);
         frame.add(pointsPanel);
         frame.setVisible(true);
         pointsPanel.repaint();
 
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(list, 200, 0.0, 100, (temp, delta) -> Math.exp(-delta / temp),
+                temp -> 0.9 * temp, new ArbitrarySwap(), pointsPanel);
+
+        try {
+            simulatedAnnealing.simulate();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }
