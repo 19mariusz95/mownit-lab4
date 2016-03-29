@@ -1,5 +1,7 @@
 import algorithm.ArbitrarySwap;
+import algorithm.ConsecutiveSwap;
 import algorithm.SimulatedAnnealing;
+import algorithm.Swap;
 import generator.GenStrategy;
 import generator.PointGenerator;
 import visualization.PointsPanel;
@@ -17,6 +19,22 @@ public class MainClass {
 
 
     public static void main(String[] args) {
+
+        Swap swap = null;
+
+        switch (args[0]) {
+            case "arbitrary": {
+                swap = new ArbitrarySwap();
+                break;
+            }
+            case "consecutive": {
+                swap = new ConsecutiveSwap();
+                break;
+            }
+            default: {
+                System.out.println("No option " + args[0]);
+            }
+        }
         List<Point> list = new ArrayList<>();
 
         PointGenerator generator = new PointGenerator(new GenStrategy() {
@@ -40,7 +58,7 @@ public class MainClass {
         pointsPanel.repaint();
 
         SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(list, 200, 0.0, 100, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, new ArbitrarySwap(), pointsPanel);
+                temp -> 0.9 * temp, swap, pointsPanel);
 
         try {
             simulatedAnnealing.simulate();
