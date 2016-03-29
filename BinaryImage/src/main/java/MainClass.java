@@ -1,5 +1,10 @@
+import algo.SimulatedAnnealing;
+import neighbourhood.Neighbourhood;
+import neighbourhood.NeighbourhoodStrategy;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,8 +20,50 @@ public class MainClass {
         JFrame frame = initFrame(n);
         JPanel[][] tab = getPanels(n, sigma, frame);
 
-
         frame.setVisible(true);
+
+        NeighbourhoodStrategy strategy = getNeighbourhoodStrategy(n);
+
+        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(n, frame, tab, strategy);
+
+        simulatedAnnealing.simulate();
+
+    }
+
+    private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy) {
+        return new SimulatedAnnealing(200, 0.0, 1000000, (temp, delta) -> Math.exp(-delta / temp),
+                temp -> 0.9 * temp, tab, n, tab1 -> {
+            double result = 0.0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
+                    for (JPanel p : neighbourhood.getNeighbourhood()) {
+                        if (p.getBackground().equals(tab1[i][j].getBackground())) {
+                            result -= 1.0;
+                        } else
+                            result += 1.0;
+                    }
+                }
+            }
+            return result;
+        }, frame);
+    }
+
+    private static NeighbourhoodStrategy getNeighbourhoodStrategy(final int n) {
+        return new NeighbourhoodStrategy() {
+            @Override
+            public void find(List<JPanel> result, JPanel[][] tab, int a, int b, int n1) {
+                int[] tmp = {0, -1, 0, 1};
+                for (int i = 0; i < 4; i++) {
+                    if (good(a + tmp[i], b + tmp[i]))
+                        result.add(tab[a + tmp[i]][b + tmp[i]]);
+                }
+            }
+
+            private boolean good(int a, int b) {
+                return a >= 0 && a < n && b >= 0 && b < n;
+            }
+        };
     }
 
     private static JPanel[][] getPanels(int n, double sigma, JFrame frame) {

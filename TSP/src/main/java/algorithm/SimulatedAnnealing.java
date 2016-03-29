@@ -33,7 +33,7 @@ public class SimulatedAnnealing implements Runnable {
         this.pointsPanel = pointsPanel;
     }
 
-    public void simulate() throws InterruptedException {
+    private void simulate() throws InterruptedException {
         int i = 0;
         Path p = new Path(list);
         Path pp;
