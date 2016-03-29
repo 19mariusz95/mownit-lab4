@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by Mariusz on 29.03.2016.
  */
-public class SimulatedAnnealing {
+public class SimulatedAnnealing implements Runnable {
     private List<Point> list;
     private double temp;
     private double minTemp;
@@ -33,10 +33,10 @@ public class SimulatedAnnealing {
         this.pointsPanel = pointsPanel;
     }
 
-    public Path simulate() throws InterruptedException {
+    public void simulate() throws InterruptedException {
         int i = 0;
         Path p = new Path(list);
-        Path pp = null;
+        Path pp;
         while (i < maxIteration && temp > minTemp) {
             pp = new Path(swap.getSwap(p.getList()));
             double delta = pp.getLength() - p.getLength();
@@ -49,6 +49,19 @@ public class SimulatedAnnealing {
             pointsPanel.repaint();
             Thread.sleep(100);
         }
-        return pp;
+    }
+
+    @Override
+    public void run() {
+        try {
+            simulate();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+        Thread thread = new Thread(this);
+        thread.start();
     }
 }
