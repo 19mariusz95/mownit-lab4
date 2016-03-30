@@ -95,10 +95,10 @@ public class SimulatedAnnealing {
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
                 applyToLabels(tab2);
+                frame.repaint();
             }
             temp = tempFunction.newTemp(temp);
             i++;
-            frame.repaint();
             Thread.sleep(10);
         }
         System.out.println("DONE");
