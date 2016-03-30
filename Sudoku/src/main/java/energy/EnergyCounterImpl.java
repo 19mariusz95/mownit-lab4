@@ -1,12 +1,10 @@
 package energy;
 
-import javax.swing.*;
-
 /**
  * Created by Mariusz on 30.03.2016.
  */
 public class EnergyCounterImpl implements EnergyCounter {
-    public double getEnergy(JPanel[][] tab) {
+    public double getEnergy(int[][] tab) {
         double energy = 0.0;
         for (int i = 0; i < 9; i++) {
             energy += findRepeatsInRow(tab, i);
@@ -17,25 +15,24 @@ public class EnergyCounterImpl implements EnergyCounter {
                 energy += findRepeatsInSquare(tab, i, j);
             }
         }
-
         return energy;
     }
 
-    private double findRepeatsInSquare(JPanel[][] tab, int i, int j) {
+    private double findRepeatsInSquare(int[][] tab, int i, int j) {
         int[] values = getValues();
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 3; l++) {
-                int tmp = Integer.parseInt(tab[k][l].getToolTipText());
+                int tmp = tab[k][l];
                 values[tmp]++;
             }
         }
         return getResult(values);
     }
 
-    private double findRepeatsInColumn(JPanel[][] tab, int i) {
+    private double findRepeatsInColumn(int[][] tab, int i) {
         int[] values = getValues();
         for (int j = 0; j < 9; j++) {
-            int tmp = Integer.parseInt(tab[j][i].getToolTipText());
+            int tmp = tab[j][i];
             values[tmp]++;
         }
         return getResult(values);
@@ -49,18 +46,18 @@ public class EnergyCounterImpl implements EnergyCounter {
         return result;
     }
 
-    private double findRepeatsInRow(JPanel[][] tab, int i) {
+    private double findRepeatsInRow(int[][] tab, int i) {
         int[] values = getValues();
         for (int j = 0; j < 9; j++) {
-            int tmp = Integer.parseInt(tab[i][j].getToolTipText());
+            int tmp = tab[i][j];
             values[tmp]++;
         }
         return getResult(values);
     }
 
     private int[] getValues() {
-        int[] val = new int[9];
-        for (int i = 0; i < 9; i++) {
+        int[] val = new int[10];
+        for (int i = 0; i < 10; i++) {
             val[i] = 0;
         }
         return val;
