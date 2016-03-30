@@ -40,7 +40,7 @@ public class SimulatedAnnealing {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 int tmp = tab[i][j];
-                if (tmp != -1)
+                if (tmp != 0)
                     active[i][j] = false;
                 else {
                     active[i][j] = true;
@@ -60,7 +60,7 @@ public class SimulatedAnnealing {
             double delta = energyCounter.getEnergy(tab2) - energyCounter.getEnergy(tab);
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
-                applyToLabels(tab);
+                applyToLabels(tab2);
             }
             temp = tempFunction.newTemp(temp);
             i++;

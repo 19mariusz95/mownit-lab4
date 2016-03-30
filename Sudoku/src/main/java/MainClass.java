@@ -85,7 +85,7 @@ public class MainClass {
                 try {
                     result[tmp][i] = Integer.parseInt(line.substring(i, i + 1));
                 } catch (NumberFormatException e) {
-                    result[tmp][i] = -1;
+                    result[tmp][i] = 0;
                 }
             }
             tmp++;
