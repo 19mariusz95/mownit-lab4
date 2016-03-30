@@ -40,13 +40,43 @@ public class SimulatedAnnealing {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 int tmp = tab[i][j];
-                if (tmp != 0)
-                    active[i][j] = false;
-                else {
-                    active[i][j] = true;
-                    int tmp1 = random.nextInt(8) + 1;
-                    tab[i][j] = tmp1;
-                    labels[i][j].setText(String.valueOf(tmp1));
+                active[i][j] = tmp == 0;
+            }
+        }
+        fillGaps();
+    }
+
+    private void fillGaps() {
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                fillSquare(i, j);
+            }
+        }
+    }
+
+    private void fillSquare(int i, int j) {
+        int[] values = new int[10];
+        for (int k = 0; k < 10; k++) {
+            values[k] = 0;
+        }
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 3; l++) {
+                int tmp = tab[i + k][j + l];
+                if (tmp > 0)
+                    values[tmp]++;
+            }
+        }
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 3; l++) {
+                int tmp = tab[i + k][j + l];
+                if (tmp == 0) {
+                    int ala;
+                    do {
+                        ala = random.nextInt(9) + 1;
+                    } while (values[ala] > 0);
+                    tab[i + k][j + l] = ala;
+                    applyToLabels(tab);
+                    values[ala]++;
                 }
             }
         }
@@ -57,7 +87,11 @@ public class SimulatedAnnealing {
         int[][] tab2;
         while (i < maxIteration && temp > minTemp) {
             tab2 = getSwap(tab);
-            double delta = energyCounter.getEnergy(tab2) - energyCounter.getEnergy(tab);
+            double en2 = energyCounter.getEnergy(tab2);
+            double en1 = energyCounter.getEnergy(tab);
+            if (en2 == 0)
+                return;
+            double delta = en2 - en1;
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
                 applyToLabels(tab2);
@@ -71,14 +105,25 @@ public class SimulatedAnnealing {
     }
 
     private int[][] getSwap(int[][] tab) {
-        int[][] result = tab.clone();
+        int[][] result = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            System.arraycopy(tab[i], 0, result[i], 0, 9);
+        }
         int a;
         int b;
         do {
             a = random.nextInt(9);
             b = random.nextInt(9);
         } while (!active[a][b]);
-        result[a][b] = random.nextInt(8) + 1;
+        int c;
+        int d;
+        do {
+            c = (a / 3) * 3 + random.nextInt(3);
+            d = (b / 3) * 3 + random.nextInt(3);
+        } while ((c == a && b == d) || !active[c][d]);
+        int tmp = result[a][b];
+        result[a][b] = result[c][d];
+        result[c][d] = tmp;
         return result;
     }
 

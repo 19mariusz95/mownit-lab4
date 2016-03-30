@@ -22,7 +22,7 @@ public class EnergyCounterImpl implements EnergyCounter {
         int[] values = getValues();
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 3; l++) {
-                int tmp = tab[k][l];
+                int tmp = tab[i + k][j + l];
                 values[tmp]++;
             }
         }
@@ -40,8 +40,9 @@ public class EnergyCounterImpl implements EnergyCounter {
 
     private double getResult(int[] values) {
         double result = 0.0;
-        for (int j = 0; j < 9; j++) {
-            result += values[j];
+        for (int j = 0; j < 10; j++) {
+            if (values[j] > 1)
+                result += values[j];
         }
         return result;
     }

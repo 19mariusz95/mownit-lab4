@@ -36,13 +36,12 @@ public class MainClass {
             double result = 0.0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
-                    for (JPanel p : neighbourhood.getNeighbourhood()) {
-                        if (p.getBackground().equals(tab1[i][j].getBackground())) {
-                            result -= 1.0;
-                        } else
-                            result += 1.0;
-                    }
+                    Neighbourhood neighbourhood = new Neighbourhood(tab1,n,i,j,getNeighbourhoodStrategy(n));
+                    for (JPanel p :neighbourhood.getNeighbourhood())
+                        if(p.getBackground().equals(tab[i][j].getBackground()))
+                            result+=2.5;
+                        else
+                            result-=1.0;
                 }
             }
             return result;

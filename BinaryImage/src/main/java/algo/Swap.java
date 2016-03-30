@@ -19,10 +19,16 @@ public class Swap {
     public JPanel[][] getSwap() {
         JPanel[][] result = tab.clone();
         Random random = new Random();
-        int a1 = random.nextInt(n);
-        int a2 = random.nextInt(n);
-        int b1 = random.nextInt(n);
-        int b2 = random.nextInt(n);
+        int a1;
+        int a2;
+        int b1;
+        int b2;
+        do {
+            a1 = random.nextInt(n);
+            a2 = random.nextInt(n);
+            b1 = random.nextInt(n);
+            b2 = random.nextInt(n);
+        }while(result[a1][a2].getBackground().equals(result[b1][b2].getBackground()));
         Color tmp = result[a1][a2].getBackground();
         result[a1][a2].setBackground(result[b1][b2].getBackground());
         result[b1][b2].setBackground(tmp);
