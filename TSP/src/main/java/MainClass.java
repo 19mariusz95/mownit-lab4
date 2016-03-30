@@ -1,5 +1,5 @@
 import algorithm.SimulatedAnnealing;
-import generator.GenStr;
+import generator.Distribution;
 import generator.GenStrategy;
 import generator.PointGenerator;
 import swaps.ArbitrarySwap;
@@ -53,9 +53,9 @@ public class MainClass {
 
     private static GenStrategy getStrategy(Properties arg) {
         try {
-            return GenStr.valueOf(arg.getProperty("distribution", "UNIFORM"));
+            return Distribution.valueOf(arg.getProperty("distribution", "UNIFORM"));
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-            return GenStr.UNIFORM;
+            return Distribution.UNIFORM;
         }
     }
 

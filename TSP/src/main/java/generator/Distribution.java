@@ -6,10 +6,8 @@ import java.util.Random;
 /**
  * Created by Mariusz on 30.03.2016.
  */
-public enum GenStr implements GenStrategy {
+public enum Distribution implements GenStrategy {
     UNIFORM {
-        private Random random = new Random();
-
         @Override
         public Point getPoint(int maxa, int maxb) {
             return new Point(random.nextInt(maxa), random.nextInt(maxb));
@@ -17,7 +15,11 @@ public enum GenStr implements GenStrategy {
     }, NORMAL {
         @Override
         public Point getPoint(int maxa, int maxb) {
-            return null;
+            int a = (int) (maxa * random.nextGaussian() / 2);
+            int b = (int) (maxb * random.nextGaussian() / 2);
+            a = Math.abs(a);
+            b = Math.abs(b);
+            return new Point(a, b);
         }
     }, GROUPS {
         @Override
@@ -25,4 +27,6 @@ public enum GenStr implements GenStrategy {
             return null;
         }
     };
+    Random random = new Random();
+
 }
