@@ -1,4 +1,4 @@
-package algorithm;
+package swaps;
 
 import java.awt.*;
 import java.util.List;

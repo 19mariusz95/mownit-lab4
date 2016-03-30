@@ -1,6 +1,7 @@
 package algorithm;
 
 import path.Path;
+import swaps.Swap;
 import visualization.PointsPanel;
 
 import java.awt.*;

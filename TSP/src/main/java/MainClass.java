@@ -1,10 +1,10 @@
-import algorithm.ArbitrarySwap;
-import algorithm.ConsecutiveSwap;
 import algorithm.SimulatedAnnealing;
-import algorithm.Swap;
 import generator.GenStr;
 import generator.GenStrategy;
 import generator.PointGenerator;
+import swaps.ArbitrarySwap;
+import swaps.ConsecutiveSwap;
+import swaps.Swap;
 import visualization.PointsPanel;
 
 import javax.swing.*;
