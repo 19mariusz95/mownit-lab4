@@ -22,9 +22,24 @@ public enum Distribution implements GenStrategy {
             return new Point(a, b);
         }
     }, GROUPS {
+        Point[] centers;
+
         @Override
         public Point getPoint(int maxa, int maxb) {
-            return null;
+            try {
+                Point c = centers[random.nextInt(9)];
+                double r = 3;
+                double angle = 2 * Math.PI * random.nextDouble();
+                int a = (int) (c.x + r * Math.cos(angle));
+                int b = (int) (c.y + r * Math.sin(angle));
+                return new Point(a, b);
+            } catch (NullPointerException e) {
+                centers = new Point[9];
+                for (int i = 0; i < 9; i++) {
+                    centers[i] = new Point(random.nextInt(maxa - 2) + 2, random.nextInt(maxb - 2) + 2);
+                }
+                return getPoint(maxa, maxb);
+            }
         }
     };
     Random random = new Random();
