@@ -2,15 +2,18 @@ import algorithm.ArbitrarySwap;
 import algorithm.ConsecutiveSwap;
 import algorithm.SimulatedAnnealing;
 import algorithm.Swap;
+import generator.GenStr;
 import generator.GenStrategy;
 import generator.PointGenerator;
 import visualization.PointsPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Properties;
 
 /**
  * Created by Mariusz on 29.03.2016.
@@ -21,28 +24,47 @@ public class MainClass {
     public static void main(String[] args) {
 
         List<Point> list = new ArrayList<>();
+        Properties properties = null;
+        try {
+            properties = readProperties();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
 
-        PointGenerator generator = new PointGenerator(new GenStrategy() {
-            private Random random = new Random();
+        GenStrategy genStrategy = getStrategy(properties);
 
-            @Override
-            public Point getPoint(int maxa, int maxb) {
-                return new Point(random.nextInt(maxa), random.nextInt(maxb));
-            }
-        }, 10, 50, 50);
+        PointGenerator generator = new PointGenerator(genStrategy, Integer.parseInt(properties.getProperty("n", "50")), 50, 50);
         generator.generate(list);
 
-        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(list, "Consecutive swap", new ConsecutiveSwap(), 0, 0);
-        SimulatedAnnealing simulatedAnnealing1 = getSimulatedAnnealing(new ArrayList<>(list), "Arbitrary swap", new ArbitrarySwap(), 600, 0);
+        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(list, properties, "Consecutive swap", new ConsecutiveSwap(), 0, 0);
+        SimulatedAnnealing simulatedAnnealing1 = getSimulatedAnnealing(new ArrayList<>(list), properties, "Arbitrary swap", new ArbitrarySwap(), 600, 0);
 
         simulatedAnnealing.start();
         simulatedAnnealing1.start();
 
     }
 
-    private static SimulatedAnnealing getSimulatedAnnealing(List<Point> list, String title, Swap swap, int x, int y) {
+    private static Properties readProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("properties.txt"));
+        return properties;
+    }
+
+    private static GenStrategy getStrategy(Properties arg) {
+        try {
+            return GenStr.valueOf(arg.getProperty("distribution", "UNIFORM"));
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            return GenStr.UNIFORM;
+        }
+    }
+
+    private static SimulatedAnnealing getSimulatedAnnealing(List<Point> list, Properties properties, String title, Swap swap, int x, int y) {
         PointsPanel pointsPanel = initFrame(list, title, x, y);
-        return new SimulatedAnnealing(list, 200, 0.0, 100, (temp, delta) -> Math.exp(-delta / temp),
+        double T = Double.parseDouble(properties.getProperty("T", "200"));
+        double minT = Double.parseDouble(properties.getProperty("minT", "200"));
+        int maxit = Integer.parseInt(properties.getProperty("maxiteration", "100"));
+        return new SimulatedAnnealing(list, T, minT, maxit, (temp, delta) -> Math.exp(-delta / temp),
                 temp -> 0.9 * temp, swap, pointsPanel);
     }
 
@@ -58,4 +80,5 @@ public class MainClass {
         pointsPanel.repaint();
         return pointsPanel;
     }
+
 }
