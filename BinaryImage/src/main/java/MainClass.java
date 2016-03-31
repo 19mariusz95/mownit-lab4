@@ -1,11 +1,14 @@
 import algo.SimulatedAnnealing;
+import energy.Energy;
 import energy.EnergyImpl;
-import neighbourhood.Neighbour;
 import neighbourhood.NeighbourhoodStrategy;
+import neighbourhood.NeighbourhoodStrategyImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -15,43 +18,57 @@ public class MainClass {
 
     public static void main(String[] args) {
 
-        int n = Integer.parseInt(args[0]);
-        double sigma = Double.parseDouble(args[1]);
+
+        Properties properties = null;
+        try {
+            properties = readProperties();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+
+        int n = Integer.parseInt(properties.getProperty("n", "100"));
+        double sigma = Double.parseDouble(properties.getProperty("sigma", "0.3"));
+        Energy energy = getEnergy(properties.getProperty("energy", "OPTION1"));
+        NeighbourhoodStrategy strategy = getNeighbourhoodStrategy(properties.getProperty("neighbourhood", "OPTION1"));
+
 
         JFrame frame = initFrame(n);
         JPanel[][] tab = getPanels(n, sigma, frame);
 
         frame.setVisible(true);
 
-        NeighbourhoodStrategy strategy = getNeighbourhoodStrategy(n);
-
-        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(n, frame, tab, strategy);
+        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(n, frame, tab, strategy, energy);
 
         simulatedAnnealing.simulate();
 
     }
 
-    private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy) {
-        return new SimulatedAnnealing(200, Double.MIN_VALUE, 1000000, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, tab, n, EnergyImpl.OPTION1, frame, strategy);
+    private static Energy getEnergy(String property) {
+        try {
+            return EnergyImpl.valueOf(property);
+        } catch (IllegalArgumentException e) {
+            return EnergyImpl.OPTION1;
+        }
     }
 
-    private static NeighbourhoodStrategy getNeighbourhoodStrategy(final int n) {
-        return new NeighbourhoodStrategy() {
-            @Override
-            public void find(List<Neighbour> result, boolean[][] tab, int a, int b, int n1) {
-                for (int i = a - 2; i < a + 3; i++) {
-                    for (int j = b - 2; j < b + 3; j++) {
-                        if (good(i, j))
-                            result.add(new Neighbour(i, j));
-                    }
-                }
-            }
+    private static Properties readProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("properties.txt"));
+        return properties;
+    }
 
-            private boolean good(int a, int b) {
-                return a >= 0 && a < n && b >= 0 && b < n;
-            }
-        };
+    private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy, Energy energy) {
+        return new SimulatedAnnealing(200, Double.MIN_VALUE, 1000000, (temp, delta) -> Math.exp(-delta / temp),
+                temp -> 0.9 * temp, tab, n, energy, frame, strategy);
+    }
+
+    private static NeighbourhoodStrategy getNeighbourhoodStrategy(String property) {
+        try {
+            return NeighbourhoodStrategyImpl.valueOf(property);
+        } catch (IllegalArgumentException e) {
+            return NeighbourhoodStrategyImpl.OPTION1;
+        }
     }
 
     private static JPanel[][] getPanels(int n, double sigma, JFrame frame) {
