@@ -59,7 +59,7 @@ public class MainClass {
     }
 
     private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy, Energy energy) {
-        return new SimulatedAnnealing(200, Double.MIN_VALUE, 1000000, (temp, delta) -> Math.exp(-delta / temp),
+        return new SimulatedAnnealing(200, Double.MIN_VALUE * 2, 1000000, (temp, delta) -> Math.exp(-delta / temp),
                 temp -> 0.9 * temp, tab, n, energy, frame, strategy);
     }
 
