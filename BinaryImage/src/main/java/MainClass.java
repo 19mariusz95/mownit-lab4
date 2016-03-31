@@ -1,6 +1,6 @@
 import algo.SimulatedAnnealing;
+import energy.EnergyImpl;
 import neighbourhood.Neighbour;
-import neighbourhood.Neighbourhood;
 import neighbourhood.NeighbourhoodStrategy;
 
 import javax.swing.*;
@@ -33,21 +33,7 @@ public class MainClass {
 
     private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy) {
         return new SimulatedAnnealing(200, Double.MIN_VALUE, 1000000, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, tab, n, tab1 -> {
-            double result = 0.0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
-                    for (Neighbour nn : neighbourhood.getNeighbourhood()) {
-                        if (Math.abs(i - nn.getRow()) < 2 && Math.abs(j - nn.getColumn()) < 2 && tab1[i][j] == tab1[nn.getRow()][nn.getColumn()]) {
-                            result -= 2.8 * Math.sqrt(Math.pow(Math.abs(n / 2 - nn.getRow()), 2) + Math.pow(Math.abs(n / 2 - nn.getColumn()), 2));
-                        } else
-                            result += 1.3;
-                    }
-                }
-            }
-            return result;
-        }, frame);
+                temp -> 0.9 * temp, tab, n, EnergyImpl.OPTION1, frame, strategy);
     }
 
     private static NeighbourhoodStrategy getNeighbourhoodStrategy(final int n) {

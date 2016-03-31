@@ -1,6 +1,7 @@
 package algo;
 
 import energy.Energy;
+import neighbourhood.NeighbourhoodStrategy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,10 +22,11 @@ public class SimulatedAnnealing {
     private int n;
     private JFrame frame;
     private Energy energy;
+    private NeighbourhoodStrategy strategy;
 
     public SimulatedAnnealing(double temp, double minTemp, int maxIteration,
                               Probability probability, TempFunction tempFunction,
-                              JPanel[][] jPanels, int n, Energy energy, JFrame frame) {
+                              JPanel[][] jPanels, int n, Energy energy, JFrame frame, NeighbourhoodStrategy strategy) {
         this.temp = temp;
         this.minTemp = minTemp;
         this.maxIteration = maxIteration;
@@ -34,6 +36,7 @@ public class SimulatedAnnealing {
         this.n = n;
         this.frame = frame;
         this.energy = energy;
+        this.strategy = strategy;
         initTab1();
     }
 
@@ -51,8 +54,8 @@ public class SimulatedAnnealing {
         boolean[][] tp;
         while (i < maxIteration && temp > minTemp) {
             tp = new Swap(tab, n).getSwap();
-            double en2 = energy.getEnergy(tp);
-            double en = energy.getEnergy(tab);
+            double en2 = energy.getEnergy(tp, n, strategy);
+            double en = energy.getEnergy(tab, n, strategy);
             double delta = en2 - en;
             System.out.println(en + " " + en2);
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
