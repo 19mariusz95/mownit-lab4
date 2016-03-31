@@ -1,0 +1,5 @@
+n=50
+T=200
+minT=0.0
+maxiteration=1000
+distribution=GROUPS

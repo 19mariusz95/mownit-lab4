@@ -57,10 +57,10 @@ public class SimulatedAnnealing {
             System.out.println(en + " " + en2);
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 apply(tp);
+                frame.repaint();
             }
             temp = tempFunction.newTemp(temp);
             i++;
-            frame.repaint();
         }
     }
 

@@ -1,4 +1,6 @@
 import algo.SimulatedAnnealing;
+import neighbourhood.Neighbour;
+import neighbourhood.Neighbourhood;
 import neighbourhood.NeighbourhoodStrategy;
 
 import javax.swing.*;
@@ -35,15 +37,15 @@ public class MainClass {
             double result = 0.0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (tab1[i][j])
-                        for (int k = Math.max(0, i - 2); k < Math.min(n, i + 3); k++) {
-                            for (int l = Math.max(0, j - 2); l < Math.min(n, j + 3); l++) {
-                                if ((Math.abs(i - k) <= 1 && Math.abs(j - l) <= 1) && tab1[i][j] == tab1[k][l])
-                                    result -= 2.0;
-                                else
-                                    result += 1.5;
-                            }
+                    if (tab1[i][j]) {
+                        Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
+                        for (Neighbour nn : neighbourhood.getNeighbourhood()) {
+                            if (Math.abs(i - nn.getRow()) < 2 && Math.abs(j - nn.getColumn()) < 2 && tab1[nn.getRow()][nn.getColumn()]) {
+                                result -= 2.8;
+                            } else
+                                result += 1.3;
                         }
+                    }
                 }
             }
             return result;
@@ -53,11 +55,12 @@ public class MainClass {
     private static NeighbourhoodStrategy getNeighbourhoodStrategy(final int n) {
         return new NeighbourhoodStrategy() {
             @Override
-            public void find(List<JPanel> result, JPanel[][] tab, int a, int b, int n1) {
-                int[] tmp = {0, -1, 0, 1};
-                for (int i = 0; i < 4; i++) {
-                    if (good(a + tmp[i], b + tmp[i]))
-                        result.add(tab[a + tmp[i]][b + tmp[i]]);
+            public void find(List<Neighbour> result, boolean[][] tab, int a, int b, int n1) {
+                for (int i = a - 2; i < a + 3; i++) {
+                    for (int j = b - 2; j < b + 3; j++) {
+                        if (good(i, j))
+                            result.add(new Neighbour(i, j));
+                    }
                 }
             }
 
