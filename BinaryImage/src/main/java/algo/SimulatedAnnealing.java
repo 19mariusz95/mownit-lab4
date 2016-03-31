@@ -67,8 +67,11 @@ public class SimulatedAnnealing {
     private void apply(boolean[][] tp) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                tab[i][j] = tp[i][j];
-                jPanels[i][j].setBackground(tp[i][j] ? Color.BLACK : Color.WHITE);
+                if (tab[i][j] != tp[i][j]) {
+                    jPanels[i][j].setBackground(tp[i][j] ? Color.BLACK : Color.WHITE);
+                    tab[i][j] = tp[i][j];
+                    jPanels[i][j].repaint();
+                }
             }
         }
     }
