@@ -1,7 +1,5 @@
 package algo;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.Random;
 
 /**
@@ -9,15 +7,18 @@ import java.util.Random;
  */
 public class Swap {
     int n;
-    private JPanel[][] tab;
+    private boolean[][] tab;
 
-    public Swap(JPanel[][] tab, int n) {
+    public Swap(boolean[][] tab, int n) {
         this.tab = tab;
         this.n = n;
     }
 
-    public JPanel[][] getSwap() {
-        JPanel[][] result = tab.clone();
+    public boolean[][] getSwap() {
+        boolean[][] result = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            System.arraycopy(tab[i], 0, result[i], 0, n);
+        }
         Random random = new Random();
         int a1;
         int a2;
@@ -28,10 +29,10 @@ public class Swap {
             a2 = random.nextInt(n);
             b1 = random.nextInt(n);
             b2 = random.nextInt(n);
-        }while(result[a1][a2].getBackground().equals(result[b1][b2].getBackground()));
-        Color tmp = result[a1][a2].getBackground();
-        result[a1][a2].setBackground(result[b1][b2].getBackground());
-        result[b1][b2].setBackground(tmp);
+        } while (result[a1][a2] && result[b1][b2]);
+        boolean tmp = result[a1][a2];
+        result[a1][a2] = result[b1][b2];
+        result[b1][b2] = tmp;
         return result;
     }
 }

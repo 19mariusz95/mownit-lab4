@@ -1,5 +1,4 @@
 import algo.SimulatedAnnealing;
-import neighbourhood.Neighbourhood;
 import neighbourhood.NeighbourhoodStrategy;
 
 import javax.swing.*;
@@ -36,12 +35,15 @@ public class MainClass {
             double result = 0.0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    Neighbourhood neighbourhood = new Neighbourhood(tab1,n,i,j,getNeighbourhoodStrategy(n));
-                    for (JPanel p :neighbourhood.getNeighbourhood())
-                        if(p.getBackground().equals(tab[i][j].getBackground()))
-                            result+=2.5;
-                        else
-                            result-=1.0;
+                    if (tab1[i][j])
+                        for (int k = Math.max(0, i - 2); k < Math.min(n, i + 3); k++) {
+                            for (int l = Math.max(0, j - 2); l < Math.min(n, j + 3); l++) {
+                                if ((Math.abs(i - k) <= 1 && Math.abs(j - l) <= 1) && tab1[i][j] == tab1[k][l])
+                                    result -= 2.0;
+                                else
+                                    result += 1.5;
+                            }
+                        }
                 }
             }
             return result;
