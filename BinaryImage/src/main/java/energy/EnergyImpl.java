@@ -46,17 +46,6 @@ public enum EnergyImpl implements Energy {
             return result;
         }
 
-    }, OPTION4 {
-        double getResult(boolean[][] tab, int n, NeighbourhoodStrategy strategy, double result, int i, int j) {
-            Neighbourhood neighbourhood = new Neighbourhood(tab, n, i, j, strategy);
-            for (Neighbour nn : neighbourhood.getNeighbourhood()) {
-                if (nn.getColumn() != j && nn.getRow() != i) {
-                    result -= 2.4;
-                } else
-                    result += 1.3;
-            }
-            return result;
-        }
     };
 
     @Override
