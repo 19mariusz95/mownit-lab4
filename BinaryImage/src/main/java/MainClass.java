@@ -32,19 +32,17 @@ public class MainClass {
     }
 
     private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy) {
-        return new SimulatedAnnealing(200, 0.0, 1000000, (temp, delta) -> Math.exp(-delta / temp),
+        return new SimulatedAnnealing(200, Double.MIN_VALUE, 1000000, (temp, delta) -> Math.exp(-delta / temp),
                 temp -> 0.9 * temp, tab, n, tab1 -> {
             double result = 0.0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (tab1[i][j]) {
-                        Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
-                        for (Neighbour nn : neighbourhood.getNeighbourhood()) {
-                            if (Math.abs(i - nn.getRow()) < 2 && Math.abs(j - nn.getColumn()) < 2 && tab1[nn.getRow()][nn.getColumn()]) {
-                                result -= 2.8;
-                            } else
-                                result += 1.3;
-                        }
+                    Neighbourhood neighbourhood = new Neighbourhood(tab1, n, i, j, strategy);
+                    for (Neighbour nn : neighbourhood.getNeighbourhood()) {
+                        if (Math.abs(i - nn.getRow()) < 2 && Math.abs(j - nn.getColumn()) < 2 && tab1[i][j] == tab1[nn.getRow()][nn.getColumn()]) {
+                            result -= 2.8 * Math.sqrt(Math.pow(Math.abs(n / 2 - nn.getRow()), 2) + Math.pow(Math.abs(n / 2 - nn.getColumn()), 2));
+                        } else
+                            result += 1.3;
                     }
                 }
             }
@@ -77,6 +75,8 @@ public class MainClass {
             JPanel p = new JPanel();
             if (random.nextDouble() <= sigma)
                 p.setBackground(Color.BLACK);
+            else
+                p.setBackground(Color.WHITE);
             frame.add(p);
             tab[i / n][i % n] = p;
         }
@@ -84,7 +84,7 @@ public class MainClass {
     }
 
     private static JFrame initFrame(int n) {
-        JFrame frame = new JFrame("ala ma kota");
+        JFrame frame = new JFrame("BinaryImage");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(new Dimension(500, 500));
         GridLayout gridLayout = new GridLayout(n, n);
