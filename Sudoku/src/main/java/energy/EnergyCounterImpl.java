@@ -40,7 +40,7 @@ public class EnergyCounterImpl implements EnergyCounter {
 
     private double getResult(int[] values) {
         double result = 0.0;
-        for (int j = 0; j < 10; j++) {
+        for (int j = 1; j < 10; j++) {
             if (values[j] > 1)
                 result += values[j];
         }

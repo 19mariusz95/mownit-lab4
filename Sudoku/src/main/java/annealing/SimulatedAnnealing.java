@@ -96,6 +96,7 @@ public class SimulatedAnnealing {
                 tab = tab2;
                 applyToLabels(tab2);
                 frame.repaint();
+                System.out.println(en2);
             }
             temp = tempFunction.newTemp(temp);
             i++;
