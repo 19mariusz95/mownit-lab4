@@ -38,7 +38,7 @@ public class MainClass {
 
         frame.setVisible(true);
 
-        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(n, frame, tab, strategy, energy);
+        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(n, frame, tab, strategy, energy, properties);
 
         simulatedAnnealing.simulate();
 
@@ -58,8 +58,9 @@ public class MainClass {
         return properties;
     }
 
-    private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy, Energy energy) {
-        return new SimulatedAnnealing(200, Double.MIN_VALUE * 2, 1000000, (temp, delta) -> Math.exp(-delta / temp),
+    private static SimulatedAnnealing getSimulatedAnnealing(int n, JFrame frame, JPanel[][] tab, NeighbourhoodStrategy strategy, Energy energy, Properties properties) {
+        return new SimulatedAnnealing(Double.parseDouble(properties.getProperty("T", "200.0")), Double.parseDouble(properties.getProperty("minT", "0.1")),
+                Integer.parseInt(properties.getProperty("maxiteration", "10000")), (temp, delta) -> Math.exp(-delta / temp),
                 temp -> 0.9 * temp, tab, n, energy, frame, strategy);
     }
 
