@@ -89,8 +89,10 @@ public class SimulatedAnnealing {
             tab2 = getSwap(tab);
             double en2 = energyCounter.getEnergy(tab2);
             double en1 = energyCounter.getEnergy(tab);
-            if (en2 == 0)
+            if (en2 == 0) {
+                System.out.println("Solved");
                 return;
+            }
             double delta = en2 - en1;
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
