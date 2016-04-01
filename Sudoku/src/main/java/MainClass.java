@@ -30,7 +30,7 @@ public class MainClass {
         JLabel[][] labels = initFrame(tab, 9, frame);
 
         double T = Double.parseDouble(properties.getProperty("T", "200"));
-        double minT = Double.parseDouble(properties.getProperty("minT", "200"));
+        double minT = Double.parseDouble(properties.getProperty("minT", "1.0"));
         int maxit = Integer.parseInt(properties.getProperty("maxiteration", "100"));
         SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(labels, tab, frame, T, minT, maxit, (temp, delta) -> Math.exp(-delta / temp),
                 temp -> 0.9 * temp, new EnergyCounterImpl());
