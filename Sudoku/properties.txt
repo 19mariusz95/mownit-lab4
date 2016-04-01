@@ -1,3 +1,0 @@
-T=200
-minT=0.0
-maxiteration=30000
