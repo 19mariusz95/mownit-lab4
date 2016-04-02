@@ -1,7 +1,7 @@
 # Sudoku
 
 1) Requirements
-  - Java 1.8
+  - Java 8
   - gradle
 
 2) Make file properties.txt with following informations:
