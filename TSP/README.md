@@ -1,6 +1,10 @@
 # TSP
 
-1) Make file properties.txt with following informations:
+1) Requirements
+  - Java 8
+  - gradle
+
+2) Make file properties.txt with following informations:
 ```
   n - number of points
   T - start temperature
@@ -19,6 +23,6 @@
   speed=SLOW
   ```
 
-2) Make and Run
+3) Make and Run
   - gradle Jar
   - java -jar build\libs\TSP-1.0.jar

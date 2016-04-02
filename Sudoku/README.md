@@ -1,6 +1,10 @@
 # Sudoku
 
-1) Make file properties.txt with following informations:
+1) Requirements
+  - Java 8
+  - gradle
+
+2) Make file properties.txt with following informations:
 ```
   T - start temperature
   minT - minimal temperature
@@ -12,7 +16,7 @@
   minT=10.0
   maxiteration=1000
   ```
-2) Prepare file with defined sudoku
+3) Prepare file with defined sudoku
   (0 means empty field)
   
   example:
