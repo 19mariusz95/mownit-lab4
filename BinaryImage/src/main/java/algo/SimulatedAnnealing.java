@@ -57,7 +57,6 @@ public class SimulatedAnnealing {
             double en2 = energy.getEnergy(tp, n, strategy);
             double en = energy.getEnergy(tab, n, strategy);
             double delta = en2 - en;
-            System.out.println(en + " " + en2);
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 apply(tp);
             }
@@ -72,7 +71,6 @@ public class SimulatedAnnealing {
                 if (tab[i][j] != tp[i][j]) {
                     jPanels[i][j].setBackground(tp[i][j] ? Color.BLACK : Color.WHITE);
                     tab[i][j] = tp[i][j];
-                    jPanels[i][j].repaint();
                 }
             }
         }
