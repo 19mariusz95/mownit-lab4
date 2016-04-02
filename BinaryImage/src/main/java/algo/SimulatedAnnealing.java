@@ -20,13 +20,12 @@ public class SimulatedAnnealing {
     private JPanel[][] jPanels;
     private boolean[][] tab;
     private int n;
-    private JFrame frame;
     private Energy energy;
     private NeighbourhoodStrategy strategy;
 
     public SimulatedAnnealing(double temp, double minTemp, int maxIteration,
                               Probability probability, TempFunction tempFunction,
-                              JPanel[][] jPanels, int n, Energy energy, JFrame frame, NeighbourhoodStrategy strategy) {
+                              JPanel[][] jPanels, int n, Energy energy, NeighbourhoodStrategy strategy) {
         this.temp = temp;
         this.minTemp = minTemp;
         this.maxIteration = maxIteration;
@@ -34,7 +33,6 @@ public class SimulatedAnnealing {
         this.tempFunction = tempFunction;
         this.jPanels = jPanels;
         this.n = n;
-        this.frame = frame;
         this.energy = energy;
         this.strategy = strategy;
         initTab1();
