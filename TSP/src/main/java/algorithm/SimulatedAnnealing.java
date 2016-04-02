@@ -48,8 +48,8 @@ public class SimulatedAnnealing implements Runnable {
             i++;
             pointsPanel.setList(p.getList());
             pointsPanel.repaint();
-            Thread.sleep(100);
         }
+        System.out.println("iterations: " + i + " temperature " + temp);
     }
 
     @Override
