@@ -1,5 +1,6 @@
 package algorithm;
 
+import algorithm.speed.Speed;
 import path.Path;
 import swaps.Swap;
 import visualization.PointsPanel;
@@ -21,9 +22,10 @@ public class SimulatedAnnealing implements Runnable {
     private Swap swap;
     private Random random = new Random();
     private PointsPanel pointsPanel;
+    private Speed speed;
 
     public SimulatedAnnealing(List<Point> list, double temp, double minTemp, int maxIteration, Probability probability,
-                              TempFunction tempFunction, Swap swap, PointsPanel pointsPanel) {
+                              TempFunction tempFunction, Swap swap, PointsPanel pointsPanel, Speed speed) {
         this.list = list;
         this.temp = temp;
         this.minTemp = minTemp;
@@ -32,6 +34,7 @@ public class SimulatedAnnealing implements Runnable {
         this.tempFunction = tempFunction;
         this.swap = swap;
         this.pointsPanel = pointsPanel;
+        this.speed = speed;
     }
 
     private void simulate() throws InterruptedException {
@@ -48,6 +51,7 @@ public class SimulatedAnnealing implements Runnable {
             i++;
             pointsPanel.setList(p.getList());
             pointsPanel.repaint();
+            speed.slowDown();
         }
         System.out.println("iterations: " + i + " temperature " + temp);
     }

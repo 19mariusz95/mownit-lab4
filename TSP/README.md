@@ -7,6 +7,7 @@
   minT - minimal temperature
   maxiteration - max iterations
   distribution - GROUPS/NORMAL/UNIFORM
+  speed - FAST/SLOW
   ```
   example:
   ```
@@ -15,6 +16,7 @@
   minT=10.0
   maxiteration=1000
   distribution=GROUPS
+  speed=SLOW
   ```
 
 2) Make and Run

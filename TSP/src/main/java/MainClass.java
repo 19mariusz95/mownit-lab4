@@ -1,4 +1,6 @@
 import algorithm.SimulatedAnnealing;
+import algorithm.speed.Speed;
+import algorithm.speed.SpeedImpl;
 import generator.Distribution;
 import generator.GenStrategy;
 import generator.PointGenerator;
@@ -33,16 +35,25 @@ public class MainClass {
         }
 
         GenStrategy genStrategy = getStrategy(properties);
+        Speed speed = getSpeed(properties);
 
         PointGenerator generator = new PointGenerator(genStrategy, Integer.parseInt(properties.getProperty("n", "50")), 50, 50);
         generator.generate(list);
 
-        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(list, properties, "Consecutive swap", new ConsecutiveSwap(), 0, 0);
-        SimulatedAnnealing simulatedAnnealing1 = getSimulatedAnnealing(new ArrayList<>(list), properties, "Arbitrary swap", new ArbitrarySwap(), 600, 0);
+        SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(list, properties, "Consecutive swap", new ConsecutiveSwap(), 0, 0, speed);
+        SimulatedAnnealing simulatedAnnealing1 = getSimulatedAnnealing(new ArrayList<>(list), properties, "Arbitrary swap", new ArbitrarySwap(), 600, 0, speed);
 
         simulatedAnnealing.start();
         simulatedAnnealing1.start();
 
+    }
+
+    private static Speed getSpeed(Properties properties) {
+        try {
+            return SpeedImpl.valueOf(properties.getProperty("speed", "FAST"));
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            return SpeedImpl.FAST;
+        }
     }
 
     private static Properties readProperties() throws IOException {
@@ -59,13 +70,13 @@ public class MainClass {
         }
     }
 
-    private static SimulatedAnnealing getSimulatedAnnealing(List<Point> list, Properties properties, String title, Swap swap, int x, int y) {
+    private static SimulatedAnnealing getSimulatedAnnealing(List<Point> list, Properties properties, String title, Swap swap, int x, int y, Speed speed) {
         PointsPanel pointsPanel = initFrame(list, title, x, y);
         double T = Double.parseDouble(properties.getProperty("T", "200"));
         double minT = Double.parseDouble(properties.getProperty("minT", "200"));
         int maxit = Integer.parseInt(properties.getProperty("maxiteration", "100"));
         return new SimulatedAnnealing(list, T, minT, maxit, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, swap, pointsPanel);
+                temp -> 0.9 * temp, swap, pointsPanel, speed);
     }
 
     private static PointsPanel initFrame(List<Point> list, String title, int x, int y) {
