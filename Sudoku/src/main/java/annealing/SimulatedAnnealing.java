@@ -101,7 +101,6 @@ public class SimulatedAnnealing {
             }
             temp = tempFunction.newTemp(temp);
             i++;
-            Thread.sleep(10);
         }
         System.out.println("energy: " + en1 + " iterations: " + i + " temperature: " + temp);
     }
