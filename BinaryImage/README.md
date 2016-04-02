@@ -1,6 +1,10 @@
 # BinaryImage
 
-1) Make file properties.txt with following informations:
+1) Requirements
+  - Java 1.8
+  - gradle
+
+2) Make file properties.txt with following informations:
 ```
   n - width and height
   sigma - density of black points
@@ -21,6 +25,6 @@
   neighbourhood=OPTION4
   ```
 
-2) Make and Run
+3) Make and Run
   - gradle Jar
   - java -jar build\libs\BinaryImage-1.0.jar
