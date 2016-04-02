@@ -93,7 +93,6 @@ public class SimulatedAnnealing {
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
                 applyToLabels(tab2);
-                //frame.repaint();
                 en1 = en2;
                 if (en1 == 0) {
                     System.out.println("Solved");
