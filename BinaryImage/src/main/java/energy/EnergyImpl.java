@@ -15,7 +15,7 @@ public enum EnergyImpl implements Energy {
     OPTION1 {
         @Override
         double getResult(boolean[][] tab, int n, double result, int i, int j, Neighbour nn) {
-            if (Math.abs(i - nn.getRow()) < 2 && Math.abs(j - nn.getColumn()) < 2 && tab[i][j] == tab[nn.getRow()][nn.getColumn()]) {
+            if (tab[i][j] == tab[nn.getRow()][nn.getColumn()]) {
                 result -= 2.8 * Math.sqrt(Math.pow(Math.abs(n / 2 - nn.getRow()), 2) + Math.pow(Math.abs(n / 2 - nn.getColumn()), 2));
             } else
                 result += 1.3;
