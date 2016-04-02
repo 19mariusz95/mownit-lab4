@@ -93,7 +93,7 @@ public class SimulatedAnnealing {
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
                 applyToLabels(tab2);
-                frame.repaint();
+                //frame.repaint();
                 en1 = en2;
                 if (en1 == 0) {
                     System.out.println("Solved");
@@ -102,7 +102,7 @@ public class SimulatedAnnealing {
             }
             temp = tempFunction.newTemp(temp);
             i++;
-            //Thread.sleep(10);
+            Thread.sleep(10);
         }
         System.out.println("energy: " + en1 + " iterations: " + i + " temperature: " + temp);
     }
