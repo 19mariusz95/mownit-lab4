@@ -63,6 +63,7 @@ public class SimulatedAnnealing {
             temp = tempFunction.newTemp(temp);
             i++;
         }
+        System.out.println("Iterations " + i + " temperature: " + temp);
     }
 
     private void apply(boolean[][] tp) {
