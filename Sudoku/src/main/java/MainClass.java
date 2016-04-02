@@ -53,7 +53,7 @@ public class MainClass {
             for (int j = 0; j < n; j++) {
                 String l = String.valueOf(tab[i][j]);
                 Color color = Color.RED;
-                if (l.equals("-1"))
+                if (l.equals("0"))
                     l = "";
                 else
                     color = Color.decode("#008000");

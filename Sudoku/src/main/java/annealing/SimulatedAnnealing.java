@@ -85,26 +85,26 @@ public class SimulatedAnnealing {
     public void simulate() throws InterruptedException {
         int i = 0;
         int[][] tab2;
+        double en1 = energyCounter.getEnergy(tab);
         while (i < maxIteration && temp > minTemp) {
             tab2 = getSwap(tab);
             double en2 = energyCounter.getEnergy(tab2);
-            double en1 = energyCounter.getEnergy(tab);
-            if (en2 == 0) {
-                System.out.println("Solved");
-                return;
-            }
             double delta = en2 - en1;
             if (delta < 0 || random.nextDouble() < probability.getProbability(temp, delta)) {
                 tab = tab2;
                 applyToLabels(tab2);
                 frame.repaint();
-                System.out.println(en2);
+                en1 = en2;
+                if (en1 == 0) {
+                    System.out.println("Solved");
+                    break;
+                }
             }
             temp = tempFunction.newTemp(temp);
             i++;
-            Thread.sleep(10);
+            //Thread.sleep(10);
         }
-        System.out.println("DONE");
+        System.out.println("energy: " + en1 + " iterations: " + i + " temperature: " + temp);
     }
 
     private int[][] getSwap(int[][] tab) {
