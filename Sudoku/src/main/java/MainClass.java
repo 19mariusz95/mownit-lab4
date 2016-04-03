@@ -51,21 +51,21 @@ public class MainClass {
         JLabel[][] labels = new JLabel[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                String l = String.valueOf(tab[i][j]);
-                Color color = Color.RED;
-                if (l.equals("0"))
-                    l = "";
-                else
-                    color = Color.decode("#008000");
-                JLabel label = new JLabel(l, SwingConstants.CENTER);
-                label.setForeground(color);
-                label.setBorder(new LineBorder(Color.BLACK));
-                labels[i][j] = label;
-                frame.add(label);
+                createLabel(tab[i][j], frame, labels, i, j);
             }
         }
         frame.setVisible(true);
         return labels;
+    }
+
+    private static void createLabel(int val, JFrame frame, JLabel[][] labels, int i, int j) {
+        String l = String.valueOf(val);
+        Color color = l.equals("0") ? Color.RED : Color.decode("#008000");
+        JLabel label = new JLabel(l, SwingConstants.CENTER);
+        label.setForeground(color);
+        label.setBorder(new LineBorder(Color.BLACK));
+        labels[i][j] = label;
+        frame.add(label);
     }
 
     private static Properties readProperties() throws IOException {
