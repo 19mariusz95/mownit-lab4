@@ -1,5 +1,7 @@
 package energy;
 
+import java.util.Arrays;
+
 /**
  * Created by Mariusz on 30.03.2016.
  */
@@ -19,7 +21,7 @@ public class EnergyCounterImpl implements EnergyCounter {
     }
 
     private double findRepeatsInSquare(int[][] tab, int i, int j) {
-        int[] values = getValues();
+        int[] values = getArrayOfValues();
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 3; l++) {
                 int tmp = tab[i + k][j + l];
@@ -30,7 +32,7 @@ public class EnergyCounterImpl implements EnergyCounter {
     }
 
     private double findRepeatsInColumn(int[][] tab, int i) {
-        int[] values = getValues();
+        int[] values = getArrayOfValues();
         for (int j = 0; j < 9; j++) {
             int tmp = tab[j][i];
             values[tmp]++;
@@ -48,7 +50,7 @@ public class EnergyCounterImpl implements EnergyCounter {
     }
 
     private double findRepeatsInRow(int[][] tab, int i) {
-        int[] values = getValues();
+        int[] values = getArrayOfValues();
         for (int j = 0; j < 9; j++) {
             int tmp = tab[i][j];
             values[tmp]++;
@@ -56,11 +58,9 @@ public class EnergyCounterImpl implements EnergyCounter {
         return getResult(values);
     }
 
-    private int[] getValues() {
+    private int[] getArrayOfValues() {
         int[] val = new int[10];
-        for (int i = 0; i < 10; i++) {
-            val[i] = 0;
-        }
+        Arrays.fill(val, 0);
         return val;
     }
 }
