@@ -10,7 +10,6 @@ import java.util.Random;
  */
 public class SimulatedAnnealing {
     private JLabel[][] labels;
-    private JFrame frame;
     private double temp;
     private double minTemp;
     private int maxIteration;
@@ -21,9 +20,8 @@ public class SimulatedAnnealing {
     private Random random;
     private EnergyCounter energyCounter;
 
-    public SimulatedAnnealing(JLabel[][] labels, int[][] tab, JFrame frame, double temp, double minTemp, int maxIteration, Probability probability, TempFunction tempFunction, EnergyCounter energyCounter) {
+    public SimulatedAnnealing(JLabel[][] labels, int[][] tab, double temp, double minTemp, int maxIteration, Probability probability, TempFunction tempFunction, EnergyCounter energyCounter) {
         this.labels = labels;
-        this.frame = frame;
         this.temp = temp;
         this.minTemp = minTemp;
         this.maxIteration = maxIteration;
