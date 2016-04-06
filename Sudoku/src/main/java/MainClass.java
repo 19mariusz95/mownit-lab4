@@ -24,7 +24,7 @@ public class MainClass {
             System.out.println(e.getMessage());
             System.exit(1);
         }
-        int[][] tab = readSudoku(filename);
+        int[][] tab = readSudoku(new File(filename));
 
         JFrame frame = new JFrame("Sudoku");
         JLabel[][] labels = initFrame(tab, 9, frame);
@@ -74,8 +74,7 @@ public class MainClass {
         return properties;
     }
 
-    protected static int[][] readSudoku(String filename) throws FileNotFoundException {
-        File file = new File(filename);
+    protected static int[][] readSudoku(File file) throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         int[][] result = new int[9][9];
         int tmp = 0;
