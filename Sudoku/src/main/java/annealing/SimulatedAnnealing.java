@@ -3,6 +3,8 @@ package annealing;
 import energy.EnergyCounter;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,7 +17,7 @@ public class SimulatedAnnealing {
     private int maxIteration;
     private Probability probability;
     private TempFunction tempFunction;
-    private boolean[][] active;
+    private List<Integer> active;
     private int[][] tab;
     private Random random;
     private EnergyCounter energyCounter;
@@ -34,11 +36,12 @@ public class SimulatedAnnealing {
     }
 
     private void setActive() {
-        this.active = new boolean[9][9];
+        this.active = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 int tmp = tab[i][j];
-                active[i][j] = tmp == 0;
+                if (tmp == 0)
+                    active.add(i * 9 + j);
             }
         }
         fillGaps();
@@ -73,18 +76,18 @@ public class SimulatedAnnealing {
                         ala = random.nextInt(9) + 1;
                     } while (values[ala] > 0);
                     tab[i + k][j + l] = ala;
-                    applyToLabels(tab);
                     values[ala]++;
                 }
             }
         }
+        applyToLabels(tab);
     }
 
-    public void simulate() throws InterruptedException {
+    public Result simulate() throws InterruptedException {
         int i = 0;
         int[][] tab2;
         double en1 = energyCounter.getEnergy(tab);
-        while (i < maxIteration && temp > minTemp) {
+        while (i < maxIteration && temp > minTemp && en1 > 0) {
             tab2 = getSwap(tab);
             double en2 = energyCounter.getEnergy(tab2);
             double delta = en2 - en1;
@@ -92,15 +95,11 @@ public class SimulatedAnnealing {
                 tab = tab2;
                 applyToLabels(tab2);
                 en1 = en2;
-                if (en1 == 0) {
-                    System.out.println("Solved");
-                    break;
-                }
             }
             temp = tempFunction.newTemp(temp);
             i++;
         }
-        System.out.println("energy: " + en1 + " iterations: " + i + " temperature: " + temp);
+        return new Result(en1, i, temp);
     }
 
     private int[][] getSwap(int[][] tab) {
@@ -108,29 +107,20 @@ public class SimulatedAnnealing {
         for (int i = 0; i < 9; i++) {
             System.arraycopy(tab[i], 0, result[i], 0, 9);
         }
-        int a;
-        int b;
-        do {
-            a = random.nextInt(9);
-            b = random.nextInt(9);
-        } while (!active[a][b]);
-        int c;
-        int d;
-        do {
-            c = (a / 3) * 3 + random.nextInt(3);
-            d = (b / 3) * 3 + random.nextInt(3);
-        } while ((c == a && b == d) || !active[c][d]);
-        int tmp = result[a][b];
-        result[a][b] = result[c][d];
-        result[c][d] = tmp;
+        int a = active.get(random.nextInt(active.size()));
+        int b = active.get(random.nextInt(active.size()));
+        int tmp = result[a / 9][a % 9];
+        result[a / 9][a % 9] = result[b / 9][b % 9];
+        result[b / 9][b % 9] = tmp;
         return result;
     }
 
     private void applyToLabels(int[][] tab) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                labels[i][j].setText(String.valueOf(tab[i][j]));
+        if (labels != null)
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    labels[i][j].setText(String.valueOf(tab[i][j]));
+                }
             }
-        }
     }
 }

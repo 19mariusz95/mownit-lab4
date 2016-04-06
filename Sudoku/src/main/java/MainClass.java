@@ -68,13 +68,13 @@ public class MainClass {
         frame.add(label);
     }
 
-    private static Properties readProperties() throws IOException {
+    protected static Properties readProperties() throws IOException {
         Properties properties = new Properties();
         properties.load(new FileInputStream("properties.txt"));
         return properties;
     }
 
-    private static int[][] readSudoku(String filename) throws FileNotFoundException {
+    protected static int[][] readSudoku(String filename) throws FileNotFoundException {
         File file = new File(filename);
         Scanner scanner = new Scanner(file);
         int[][] result = new int[9][9];
