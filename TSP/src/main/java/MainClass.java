@@ -76,7 +76,7 @@ public class MainClass {
         double minT = Double.parseDouble(properties.getProperty("minT", "200"));
         int maxit = Integer.parseInt(properties.getProperty("maxiteration", "100"));
         return new SimulatedAnnealing(list, T, minT, maxit, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, swap, pointsPanel, speed);
+                temp -> 0.997 * temp, swap, pointsPanel, speed);
     }
 
     private static PointsPanel initFrame(List<Point> list, String title, int x, int y) {

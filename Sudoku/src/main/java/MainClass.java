@@ -33,7 +33,7 @@ public class MainClass {
         double minT = Double.parseDouble(properties.getProperty("minT", "1.0"));
         int maxit = Integer.parseInt(properties.getProperty("maxiteration", "100"));
         SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(labels, tab, frame, T, minT, maxit, (temp, delta) -> Math.exp(-delta / temp),
-                temp -> 0.9 * temp, new EnergyCounterImpl());
+                temp -> 0.997 * temp, new EnergyCounterImpl());
 
         try {
             simulatedAnnealing.simulate();
