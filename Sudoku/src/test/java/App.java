@@ -15,7 +15,7 @@ public class App extends Application {
     private static XYChart.Series<Number, Number> series;
 
     public static void main(String[] args) throws FileNotFoundException {
-        series = new IterationTest().ala();
+        series = new IterationTest().getSeries();
         launch(args);
     }
 

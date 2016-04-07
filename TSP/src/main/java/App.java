@@ -4,6 +4,12 @@ import algorithm.speed.SpeedImpl;
 import generator.Distribution;
 import generator.GenStrategy;
 import generator.PointGenerator;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 import swaps.ArbitrarySwap;
 import swaps.ConsecutiveSwap;
 import swaps.Swap;
@@ -12,20 +18,25 @@ import visualization.PointsPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
- * Created by Mariusz on 29.03.2016.
+ * Created by Mariusz on 06.04.2016.
  */
-public class MainClass {
+public class App extends Application {
 
+    private static List<XYChart.Series<Number, Number>> seriesList = new ArrayList<>();
 
-    public static void main(String[] args) {
-
-        List<Point> list = new ArrayList<>();
+    public static void main(String[] args) throws FileNotFoundException, ExecutionException, InterruptedException {
+        java.util.List<Point> list = new ArrayList<>();
         Properties properties = null;
         try {
             properties = readProperties();
@@ -43,9 +54,13 @@ public class MainClass {
         SimulatedAnnealing simulatedAnnealing = getSimulatedAnnealing(list, properties, "Consecutive swap", new ConsecutiveSwap(), 0, 0, speed);
         SimulatedAnnealing simulatedAnnealing1 = getSimulatedAnnealing(new ArrayList<>(list), properties, "Arbitrary swap", new ArbitrarySwap(), 600, 0, speed);
 
-        simulatedAnnealing.start();
-        simulatedAnnealing1.start();
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<XYChart.Series<Number, Number>> submit = executor.submit(simulatedAnnealing);
+        Future<XYChart.Series<Number, Number>> submit1 = executor.submit(simulatedAnnealing1);
+        seriesList.add(submit.get());
+        seriesList.add(submit1.get());
 
+        launch(args);
     }
 
     private static Speed getSpeed(Properties properties) {
@@ -92,4 +107,17 @@ public class MainClass {
         return pointsPanel;
     }
 
+    @Override
+    public void start(Stage stage) {
+
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final LineChart<Number, Number> lineChart =
+                new LineChart<>(xAxis, yAxis);
+        Scene scene = new Scene(lineChart, 800, 600);
+        lineChart.getData().addAll(seriesList);
+
+        stage.setScene(scene);
+        stage.show();
+    }
 }

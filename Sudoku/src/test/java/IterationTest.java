@@ -41,7 +41,7 @@ public class IterationTest {
         return tab;
     }
 
-    public XYChart.Series<Number, Number> ala() throws FileNotFoundException {
+    public XYChart.Series<Number, Number> getSeries() throws FileNotFoundException {
         Properties properties = null;
         try {
             properties = MainClass.readProperties();
