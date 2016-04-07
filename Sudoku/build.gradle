@@ -13,7 +13,7 @@ task Jar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Gradle Jar File Example',
                 'Implementation-Version': version,
-                'Main-Class': 'MainClass'
+                'Main-Class': 'App'
     }
     name = 'Sudoku'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

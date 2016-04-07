@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 /**
  * Created by Mariusz on 06.04.2016.
  */
-public class App extends Application {
+public class TestApp extends Application {
 
     private static XYChart.Series<Number, Number> series;
 

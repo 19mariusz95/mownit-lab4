@@ -1,5 +1,12 @@
+import annealing.Result;
 import annealing.SimulatedAnnealing;
 import energy.EnergyCounterImpl;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -12,9 +19,12 @@ import java.util.Properties;
 import java.util.Scanner;
 
 /**
- * Created by Mariusz on 29.03.2016.
+ * Created by Mariusz on 06.04.2016.
  */
-public class MainClass {
+public class App extends Application {
+
+    private static XYChart.Series<Number, Number> series;
+
     public static void main(String[] args) throws FileNotFoundException {
         String filename = args[0];
         Properties properties = null;
@@ -36,11 +46,13 @@ public class MainClass {
                 temp -> 0.997 * temp, new EnergyCounterImpl());
 
         try {
-            simulatedAnnealing.simulate();
+            Result result = simulatedAnnealing.simulate();
+            System.out.println(result);
+            series = result.getEnergySeries();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        launch(args);
     }
 
     private static JLabel[][] initFrame(int[][] tab, int n, JFrame frame) {
@@ -90,5 +102,19 @@ public class MainClass {
             tmp++;
         }
         return result;
+    }
+
+    @Override
+    public void start(Stage stage) {
+
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final LineChart<Number, Number> lineChart =
+                new LineChart<>(xAxis, yAxis);
+        Scene scene = new Scene(lineChart, 800, 600);
+        lineChart.getData().add(series);
+
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -31,17 +31,7 @@ public class IterationTest {
         return tab2;
     }
 
-    private static int[][] getTabForTests() {
-        int[][] tab = new int[9][9];
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                tab[i][j] = (i + j + 2 * (i % 3)) % 9 + 1;
-            }
-        }
-        return tab;
-    }
-
-    public XYChart.Series<Number, Number> getSeries() throws FileNotFoundException {
+    XYChart.Series<Number, Number> getSeries() throws FileNotFoundException {
         Properties properties = null;
         try {
             properties = MainClass.readProperties();

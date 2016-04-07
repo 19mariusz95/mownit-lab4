@@ -1,6 +1,7 @@
 package annealing;
 
 import energy.EnergyCounter;
+import javafx.scene.chart.XYChart;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -84,10 +85,12 @@ public class SimulatedAnnealing {
     }
 
     public Result simulate() throws InterruptedException {
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
         int i = 0;
         int[][] tab2;
         double en1 = energyCounter.getEnergy(tab);
         while (i < maxIteration && temp > minTemp && en1 > 0) {
+            series.getData().add(new XYChart.Data<>(i, en1));
             tab2 = getSwap(tab);
             double en2 = energyCounter.getEnergy(tab2);
             double delta = en2 - en1;
@@ -99,7 +102,7 @@ public class SimulatedAnnealing {
             temp = tempFunction.newTemp(temp);
             i++;
         }
-        return new Result(en1, i, temp);
+        return new Result(en1, i, temp, series);
     }
 
     private int[][] getSwap(int[][] tab) {
