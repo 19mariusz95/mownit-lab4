@@ -97,7 +97,7 @@ public class App extends Application {
     private static PointsPanel initFrame(List<Point> list, String title, int x, int y) {
         JFrame frame = new JFrame();
         frame.setTitle(title);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(new Dimension(600, 600));
         frame.setLocation(x, y);
         PointsPanel pointsPanel = new PointsPanel(list, 10);
