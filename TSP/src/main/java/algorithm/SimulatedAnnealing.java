@@ -62,7 +62,7 @@ public class SimulatedAnnealing implements Callable<XYChart.Series<Number, Numbe
             pointsPanel.repaint();
             speed.slowDown();
         }
-        System.out.println("iterations: " + i + " temperature " + temp);
+        System.out.println("iterations: " + i + " energy " + p.getLength());
         return series;
     }
 
