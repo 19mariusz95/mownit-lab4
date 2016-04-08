@@ -6,7 +6,7 @@ import java.util.Random;
  * Created by Mariusz on 29.03.2016.
  */
 public class Swap {
-    int n;
+    private int n;
     private boolean[][] tab;
 
     public Swap(boolean[][] tab, int n) {
