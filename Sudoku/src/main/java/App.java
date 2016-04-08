@@ -111,6 +111,7 @@ public class App extends Application {
         final NumberAxis yAxis = new NumberAxis();
         final LineChart<Number, Number> lineChart =
                 new LineChart<>(xAxis, yAxis);
+        lineChart.setCreateSymbols(false);
         Scene scene = new Scene(lineChart, 800, 600);
         lineChart.getData().add(series);
 
